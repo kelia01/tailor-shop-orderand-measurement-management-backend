@@ -52,4 +52,8 @@ public class CustomerService {
         customerRepo.deleteById(id);
         return "Customer deleted successfully";
     }
+
+    public List<Customer> findByLastNameIgnoreCaseOrderByFirstNameAsc(String lastName){
+        return customerRepo.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+    }
 }

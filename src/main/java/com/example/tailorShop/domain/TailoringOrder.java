@@ -20,7 +20,7 @@ public class TailoringOrder {
     
     private String garmentDescription;
 
-    private int chectCm;
+    private int chestCm;
 
     @ManyToOne 
     @JoinColumn (name = "customer_id")
@@ -58,12 +58,12 @@ public class TailoringOrder {
         this.garmentDescription = garmentDescription;
     }
 
-    public int getChectCm() {
-        return chectCm;
+    public int getChestCm() {
+        return chestCm;
     }
 
-    public void setChectCm(int chectCm) {
-        this.chectCm = chectCm;
+    public void setChestCm(int chestCm) {
+        this.chestCm = chestCm;
     }
 
     public Customer getCustomer() {

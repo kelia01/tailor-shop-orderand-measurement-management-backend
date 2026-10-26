@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.tailorShop.service;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,8 +1,9 @@
 package com.example.tailorShop.repository;
 
-import com.example.tailorShop.domain.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.example.tailorShop.domain.Customer;
 
 import java.util.UUID;
 

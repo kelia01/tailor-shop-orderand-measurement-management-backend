@@ -18,7 +18,17 @@ public class TailoringOrderService {
     private TailoringOrderRepository tailoringOrderRepo;
 
     public String save(TailoringOrder order) {
+        if (order.getOrderDate().isBefore(LocalDate.now())) {
+            return "Tailoring order date cannot be in the past";
+        }
+
+        if(tailoringOrderRepo.existsByTailor_IdAndOrderDateAndStatusNot(order.getTailor().getId(), order.getOrderDate(), OrderStatus.CANCELLED)){
+            return "Tailor already has an order to start on that date";
+        }
+
+        order.setStatus(OrderStatus.PLACED);
         tailoringOrderRepo.save(order);
+
         return "Tailoring order saved successfully";
     }
 
@@ -64,6 +74,31 @@ public class TailoringOrderService {
 
     public List<TailoringOrder> findByOrderDateBetween(LocalDate start, LocalDate end){
         return tailoringOrderRepo.findByOrderDateBetween(start, end);
+    }
+
+    public String updateOrderStatus(UUID orderId, OrderStatus newStatus){
+        Optional<TailoringOrder> existing = tailoringOrderRepo.findById(orderId);
+
+        if(existing == null ){
+            return "The tailoring order with that id does not exist";
+        }
+
+        TailoringOrder order = existing.get();
+        OrderStatus current = order.getStatus();
+
+        boolean valid = (current == OrderStatus.PLACED && 
+        (newStatus == OrderStatus.CANCELLED || newStatus == OrderStatus.STITCHING) )||
+        (current == OrderStatus.STITCHING && 
+        (newStatus == OrderStatus.READY || newStatus == OrderStatus.CANCELLED));
+
+        if(!valid){
+            return "Cannot change status from" + current + "to" + newStatus;
+        }
+
+        order.setStatus(newStatus);
+        tailoringOrderRepo.save(order);
+
+        return "Tailoring order status updated successfully";
     }
 
 }

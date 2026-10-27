@@ -14,4 +14,9 @@ import com.example.tailorShop.domain.TailoringOrder;
 public interface TailoringOrderRepository extends JpaRepository<TailoringOrder, UUID>{
     List<TailoringOrder> findByOrderStatusOrderByOrderDateAsc(OrderStatus orderStatus);
     List<TailoringOrder> findByOrderDateBetween(LocalDate start, LocalDate end);
+
+    boolean existsByTailor_IdAndOrderDateAndStatusNot(
+        UUID tailorId, LocalDate orderDate, OrderStatus status);
+
+    
 }

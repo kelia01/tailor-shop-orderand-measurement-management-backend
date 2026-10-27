@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,7 +31,18 @@ public class TailoringOrderController {
     
     @PostMapping ("/save")
     public ResponseEntity<?> save(@RequestBody TailoringOrder tailoringOrder){
-        return ResponseEntity.status(HttpStatus.CREATED).body(tailoringOrderServ.save(tailoringOrder));
+        String result = tailoringOrderServ.save(tailoringOrder);
+
+        if (result.equals("Tailoring order date cannot be in the past")){
+            return ResponseEntity.badRequest().body(result);
+        }
+
+        if (result.equals(
+            "Tailor already has an order to start on that date")) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+    }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @GetMapping("/all")
@@ -90,5 +102,22 @@ public class TailoringOrderController {
         List<TailoringOrder> result = tailoringOrderServ.findByOrderDateBetween(startDate, endDate);
         return ResponseEntity.ok(result);
     }
+
+    @PatchMapping ("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable UUID id, @RequestParam OrderStatus status){
+        String result = tailoringOrderServ.updateOrderStatus(id, status);
+
+        if (result.equals(
+                "The tailoring order with that id does not exist")) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+        }
+
+        if (result.startsWith("Cannot change status")) {
+            return ResponseEntity.badRequest().body(result);
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
 }
 

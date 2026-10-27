@@ -58,4 +58,8 @@ public class TailorService {
     public List<Tailor> findByGarmentTypeName(String name){
         return tailorRepo.findByGarmentTypeName(name);
     }
+
+    public boolean existsById(UUID id){
+        return tailorRepo.existsById(id);
+    }
 }

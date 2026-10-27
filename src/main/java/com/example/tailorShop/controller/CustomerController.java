@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tailorShop.domain.Customer;
 import com.example.tailorShop.service.CustomerService;
+import com.example.tailorShop.service.TailorService;
 
 @RestController 
 @RequestMapping ("/customers")
@@ -25,6 +26,10 @@ public class CustomerController {
 
     @Autowired 
     private CustomerService customerServ;
+
+    
+    @Autowired 
+    private TailorService tailorServ;
 
     @PostMapping ("/save")
     public ResponseEntity<?> save(@RequestBody Customer customer){
@@ -78,6 +83,18 @@ public class CustomerController {
         List<Customer> result = customerServ.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping ("/of-tailor/{tailorId}")
+    public ResponseEntity<?> findCustomersOfTailor(@PathVariable UUID tailorId){
+        boolean exists = tailorServ.existsById(tailorId);
+        if(!exists){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The tailor with that id does not exist");
+        } else {
+            return ResponseEntity.ok(customerServ.findCustomersOfTailor(tailorId));
+        }
+
+
     }
 
 }

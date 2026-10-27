@@ -48,5 +48,9 @@ public class GarmentTypeService {
         GarmentTypeRepo.deleteById(id);
         return "Garment type deleted successfully";
     }
+
+    public List<GarmentType> findUnusedGarmentTypes() {
+    return GarmentTypeRepo.findUnusedGarmentTypes();
+}
 }
 

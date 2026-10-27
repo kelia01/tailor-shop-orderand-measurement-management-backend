@@ -56,4 +56,8 @@ public class CustomerService {
     public List<Customer> findByLastNameIgnoreCaseOrderByFirstNameAsc(String lastName){
         return customerRepo.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
     }
+
+    public List<Customer> findCustomersOfTailor(UUID tailorId){
+        return customerRepo.findCustomersOfTailor(tailorId);
+    }
 }

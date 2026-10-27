@@ -64,5 +64,9 @@ public class GarmentTypeController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping ("/unused")
+    public ResponseEntity<?> findUnusedGarmentTypes(){
+        return ResponseEntity.ok(GarmentTypeServ.findUnusedGarmentTypes());
+    }
 
 }

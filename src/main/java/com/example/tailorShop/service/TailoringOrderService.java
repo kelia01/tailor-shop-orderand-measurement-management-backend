@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.tailorShop.domain.OrderStatus;
 import com.example.tailorShop.domain.TailoringOrder;
+import com.example.tailorShop.repository.AlterationRepository;
 import com.example.tailorShop.repository.TailoringOrderRepository;
 
 import java.time.LocalDate;
@@ -16,6 +17,9 @@ import java.util.UUID;
 public class TailoringOrderService {
     @Autowired
     private TailoringOrderRepository tailoringOrderRepo;
+
+    @Autowired
+    private AlterationRepository alterationRepo;
 
     public String save(TailoringOrder order) {
         if (order.getOrderDate().isBefore(LocalDate.now())) {
@@ -60,8 +64,14 @@ public class TailoringOrderService {
         return "Tailoring order updated successfully";
     }
     public String delete(UUID id) {
+        TailoringOrder result = tailoringOrderRepo.findById(id).orElse(null);
+
         if (!tailoringOrderRepo.existsById(id)) {
             return "The tailoring order with that id does not exist";
+        }
+
+        if(alterationRepo.existsByTailoringOrder(result)){
+            return "That tailoring order has alterations, delete them first";
         }
 
         tailoringOrderRepo.deleteById(id);

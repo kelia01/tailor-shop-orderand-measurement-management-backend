@@ -83,6 +83,9 @@ public class TailoringOrderController {
         if (result.contains("does not exist")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }
+        if(result.contains("That tailoring order has alterations, delete them first")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+        }
 
         return ResponseEntity.ok(result);
     }

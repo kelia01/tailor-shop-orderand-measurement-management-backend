@@ -21,7 +21,7 @@ import com.example.tailorShop.service.CustomerService;
 import com.example.tailorShop.service.TailorService;
 
 @RestController 
-@RequestMapping ("/customers")
+@RequestMapping ("customers")
 public class CustomerController {
 
     @Autowired 

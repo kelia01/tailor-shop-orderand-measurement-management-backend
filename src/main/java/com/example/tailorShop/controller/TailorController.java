@@ -61,6 +61,23 @@ public class TailorController {
         return ResponseEntity.ok(result);
     }
 
+    @PatchMapping ("/{tailorId}/garment-types/{garmentTypeId}")
+    public ResponseEntity<?> addGarmentType( @PathVariable UUID tailorId,
+        @PathVariable UUID garmentTypeId){
+            String result = tailorServ.addGarmentType(tailorId, garmentTypeId);
+
+    if (result.equals("The tailor with that id does not exist")
+            || result.equals("That garment type does not exist")) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+    }
+
+    if (result.equals("The tailor already has that garment type")) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+    }
+
+    return ResponseEntity.ok(result);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
         String result = tailorServ.delete(id);
@@ -69,6 +86,22 @@ public class TailorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }
 
+        return ResponseEntity.ok(result);
+    }
+
+    @PatchMapping ("/{tailorId}/workstation")
+    public ResponseEntity<?> changeWorkstation (@PathVariable UUID tailorId, @RequestParam int stationNumber){
+        String result = tailorServ.changeWorkstation(tailorId, stationNumber);
+
+        if (result.equals("The tailor with that id does not exist")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+        }
+        if (result.equals("The workstation with that stationNumber does not exist")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+        }
+        if (result.equals("That workstation is taken by another tailor")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+        }
         return ResponseEntity.ok(result);
     }
 

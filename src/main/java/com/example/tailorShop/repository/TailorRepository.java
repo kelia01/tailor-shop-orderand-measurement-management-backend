@@ -24,4 +24,9 @@ public interface TailorRepository extends JpaRepository<Tailor, UUID> {
 
     List<Tailor> findByGarmentTypeName(@Param ("name") String name);
     
+    boolean existsByIdAndGarmentTypes_Id(UUID tailorId, UUID garmentTypeId);
+
+    boolean existsByWorkstation_StationNumberAndIdNot(
+        int stationNumber, UUID tailorId
+    );
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.tailorShop.domain.Customer;
 import com.example.tailorShop.domain.OrderStatus;
 import com.example.tailorShop.domain.TailoringOrder;
 import com.example.tailorShop.service.TailoringOrderService;
@@ -84,7 +83,7 @@ public class TailoringOrderController {
     }
 
     @GetMapping ("/between")
-    public ResponseEntity<?> findByDateBetween(String start, String end){
+    public ResponseEntity<?> findByDateBetween(@RequestParam String start, @RequestParam String end){
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
 

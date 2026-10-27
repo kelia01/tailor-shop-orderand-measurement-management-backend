@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.tailorShop.domain.Workstation;
 import com.example.tailorShop.service.WorkstationService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -59,6 +60,13 @@ public class WorkstationController {
         if (result.contains("does not exist")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping ("/free")
+    public ResponseEntity<?> findFreeWorkstations(){
+        List<Workstation> result = workstationServ.findFreeWorkstations();
 
         return ResponseEntity.ok(result);
     }

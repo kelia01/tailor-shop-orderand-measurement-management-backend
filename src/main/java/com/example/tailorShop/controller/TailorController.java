@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController 
@@ -16,27 +17,34 @@ public class TailorController {
     
     @Autowired
     private TailorService tailorServ;
-
+    
     @PostMapping ("/save")
     public ResponseEntity<?> save(@RequestBody Tailor tailor){
         return ResponseEntity.status(HttpStatus.CREATED).body(tailorServ.save(tailor));
     }
-
+    
     @GetMapping("/all")
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(tailorServ.findAll());
     }
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable UUID id) {
-    Tailor result = tailorServ.findById(id).orElse(null);
-
+        Tailor result = tailorServ.findById(id).orElse(null);
+        
         if (result != null) {
             return ResponseEntity.ok(result);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(result);
+            .body(result);
         }
+    }
+
+    @GetMapping ("/by-garment-type")
+    public ResponseEntity<?> findByGarmentTypeName (@RequestParam String name){
+        List<Tailor> result = tailorServ.findByGarmentTypeName(name);
+
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping("/update/{id}")
@@ -63,4 +71,6 @@ public class TailorController {
 
         return ResponseEntity.ok(result);
     }
+
+
 }

@@ -49,4 +49,8 @@ public class WorkstationService {
         WorkstationRepo.deleteById(id);
         return "Workstation deleted successfully";
     }
+
+    public List<Workstation> findFreeWorkstations(){
+        return WorkstationRepo.findFreeWorkstations();
+    }
 }

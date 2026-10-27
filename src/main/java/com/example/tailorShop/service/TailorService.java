@@ -54,4 +54,8 @@ public class TailorService {
         tailorRepo.deleteById(id);
         return "Tailor deleted successfully";
     }
+
+    public List<Tailor> findByGarmentTypeName(String name){
+        return tailorRepo.findByGarmentTypeName(name);
+    }
 }

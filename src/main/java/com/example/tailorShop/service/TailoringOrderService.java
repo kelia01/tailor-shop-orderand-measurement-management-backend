@@ -3,9 +3,11 @@ package com.example.tailorShop.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.tailorShop.domain.OrderStatus;
 import com.example.tailorShop.domain.TailoringOrder;
 import com.example.tailorShop.repository.TailoringOrderRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,6 +56,14 @@ public class TailoringOrderService {
 
         tailoringOrderRepo.deleteById(id);
         return "Tailoring order deleted successfully";
+    }
+
+    public List<TailoringOrder> findByOrderStatusOrderByOrderDateAsc(OrderStatus orderStatus){
+        return tailoringOrderRepo.findByOrderStatusOrderByOrderDateAsc(orderStatus);
+    }
+
+    public List<TailoringOrder> findByOrderDateBetween(LocalDate start, LocalDate end){
+        return tailoringOrderRepo.findByOrderDateBetween(start, end);
     }
 
 }

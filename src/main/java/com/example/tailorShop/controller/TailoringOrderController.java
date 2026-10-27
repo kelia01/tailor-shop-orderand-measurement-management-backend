@@ -1,5 +1,7 @@
 package com.example.tailorShop.controller;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.tailorShop.domain.Customer;
+import com.example.tailorShop.domain.OrderStatus;
 import com.example.tailorShop.domain.TailoringOrder;
 import com.example.tailorShop.service.TailoringOrderService;
 
@@ -68,6 +73,22 @@ public class TailoringOrderController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }
 
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping ("/by-status")
+    public ResponseEntity<?> findByOrderStatusOrderByOrderDateAsc(@RequestParam OrderStatus orderStatus){
+        List<TailoringOrder> result = tailoringOrderServ.findByOrderStatusOrderByOrderDateAsc(orderStatus);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping ("/between")
+    public ResponseEntity<?> findByDateBetween(String start, String end){
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+
+        List<TailoringOrder> result = tailoringOrderServ.findByOrderDateBetween(startDate, endDate);
         return ResponseEntity.ok(result);
     }
 }

@@ -122,5 +122,21 @@ public class TailoringOrderController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping ("/stats/by-status")
+    public ResponseEntity<?> countOrdersByStatus() {
+        return ResponseEntity.ok(tailoringOrderServ.countOrdersByStatus());
+    }
+
+    @PatchMapping("/cancel-day")
+    public ResponseEntity<?> cancelOrdersForDay(
+        @RequestParam UUID tailorId,
+        @RequestParam String date) {
+
+    LocalDate orderDate = LocalDate.parse(date);
+
+    return ResponseEntity.ok(
+            tailoringOrderServ.countCancelledOrdersOnDate(tailorId, orderDate));
+}
+
 }
 

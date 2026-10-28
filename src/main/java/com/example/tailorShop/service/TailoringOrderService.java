@@ -111,4 +111,13 @@ public class TailoringOrderService {
         return "Tailoring order status updated successfully";
     }
 
+    public List<Object[]> countOrdersByStatus(){
+        return tailoringOrderRepo.countOrdersByStatus();
+    }
+
+    public String countCancelledOrdersOnDate(UUID tailorId, LocalDate date){
+        int count = tailoringOrderRepo.cancelOrdersForTailorOnDate(tailorId, date, OrderStatus.CANCELLED, OrderStatus.READY);
+
+        return count + " tailoring orders cancelled";
+    }
 }
